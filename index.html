@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8">
+    <!-- OTIMIZAÇÃO KÓDEX: Bloqueio de zoom para sensação nativa -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- CONEXÃO PWA KÓDEX -->
+    <meta name="theme-color" content="#050505">
+    <meta name="description" content="AFROKÓDICA OS - Infraestrutura Cognitiva">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+
+    <title>AFROKÓDICA OS | Nexo Soberano</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React Core -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Dancing+Script:wght@700&family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- KÓDEX DESIGN SYSTEM v3.8 --- */
+        :root {
+            --bg-deep: #050505;
+            --bg-panel: rgba(20, 20, 25, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: #e2e8f0;
+            overflow: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .font-sign { font-family: 'Dancing Script', cursive; }
+        .font-brand { font-family: 'Cinzel', serif; }
+        .font-serif { font-family: 'Lora', serif; }
+
+        .glass {
+            background: var(--bg-panel);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-light {
+             background: rgba(255, 255, 255, 0.03);
+             border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-active {
+            background: rgba(79, 70, 229, 0.2);
+            border: 1px solid rgba(79, 70, 229, 0.5);
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.2);
+            color: white;
+        }
+
+        /* Editor Styles */
+        .editor-content {
+            outline: none;
+            min-height: 100%;
+            white-space: pre-wrap; /* Mantém quebras de linha */
+            word-wrap: break-word; /* Evita scroll horizontal forçado */
+        }
+        .editor-content b, .editor-content strong { font-weight: 700; color: #fff; }
+        .editor-content i, .editor-content em { font-style: italic; color: #a5b4fc; }
+        .editor-content u { text-decoration: underline; text-decoration-color: #fbbf24; }
+        .editor-content ul { list-style-type: disc; padding-left: 1.5em; margin: 0.5em 0; }
+        .editor-content ol { list-style-type: decimal; padding-left: 1.5em; margin: 0.5em 0; }
+        .editor-content h1 { font-size: 1.5em; font-weight: bold; margin-bottom: 0.5em; color: #fff; border-bottom: 1px solid #333; padding-bottom: 0.2em; }
+        .editor-content h2 { font-size: 1.25em; font-weight: bold; margin-bottom: 0.5em; color: #e2e8f0; }
+
+        /* Animações */
+        @keyframes boot-logo {
+            0% { opacity: 0; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.1); }
+        }
+        
+        @keyframes slide-up {
+            from { transform: translateY(20px) scale(0.98); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        @keyframes slide-in-right {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 0 rgba(239, 68, 68, 0); }
+            50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); }
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(500%); }
+        }
+
+        .animate-boot { animation: boot-logo 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .animate-window { animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-slide-in { animation: slide-in-right 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-alarm { animation: pulse-red 1s infinite; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); margin: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: { 850: '#151d2d', 900: '#0f172a', 950: '#020617' },
+                        system: { dark: '#050505', panel: '#111116' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+        // --- ÍCONES (SVG Nativo) ---
+        const Icon = ({ p, s = 20, c = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={c}>{p}</svg>
+        );
+        const I = {
+            Grid: <><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></>,
+            Search: <><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></>,
+            Globe: <><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></>,
+            Min: <><line x1="4" y1="12" x2="20" y2="12"></line></>,
+            Ext: <><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></>,
+            Lock: <><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></>,
+            Wifi: <><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></>,
+            Cpu: <><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></>,
+            Terminal: <><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></>,
+            Layers: <><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></>,
+            Clock: <><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></>,
+            Play: <polygon points="5 3 19 12 5 21 5 3"></polygon>,
+            Pause: <><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></>,
+            Rotate: <><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></>,
+            Edit: <><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></>,
+            Save: <><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></>,
+            Copy: <><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></>,
+            Trash: <><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></>,
+            Settings: <><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></>,
+            Type: <><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></>,
+            Expand: <><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></>,
+            Shrink: <><polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line><line x1="3" y1="21" x2="10" y2="14"></line></>,
+            MaxWin: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></>,
+            Restore: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><path d="M3 13h18"></path></>,
+            Code: <><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></>,
+            User: <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></>,
+            Shield: <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></>,
+            FileText: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></>,
+            Mail: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></>,
+            Folder: <><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></>,
+            Plus: <><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></>,
+            Bot: <><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></>,
+            // Word Tools Icons
+            Bold: <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>,
+            Italic: <line x1="19" y1="4" x2="10" y2="4"></line>,
+            Underline: <path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"></path>,
+            List: <line x1="8" y1="6" x2="21" y2="6"></line>,
+            AlignLeft: <line x1="17" y1="10" x2="3" y2="10"></line>,
+            AlignCenter: <line x1="18" y1="10" x2="6" y2="10"></line>
+        };
+
+        // --- DATABASE KÓDEX (ARSENAL SOBERANO EXPANDIDO) ---
+        const SYSTEM_APPS = [
+            // --- NATIVOS (CORE) ---
+            { id: 'genesis', name: 'Génese', cat: 'Identity', icon: I.User, color: 'text-amber-400', type: 'native' },
+            { id: 'focus', name: 'Cronos', cat: 'System', icon: I.Clock, color: 'text-indigo-400', type: 'native' },
+            { id: 'notes', name: 'Códice', cat: 'Office', icon: I.Edit, color: 'text-yellow-400', type: 'native' },
+            { id: 'portal', name: 'Portal 3D', cat: 'Web', icon: I.Globe, color: 'text-white', url: './manifesto.html#manifesto', type: 'web' }, 
+            
+            // --- INTELIGÊNCIA ARTIFICIAL ---
+            { id: 'ia_search', name: 'Nexo IA', cat: 'IA', icon: I.Bot, color: 'text-purple-400', url: 'https://www.google.com/search?q=&sca_esv=7154391049cab9c6&sxsrf=ANbL-n4TOqq2qZghBeXaCavoaPAFIW6PAw%3A1771942404765&source=hp&ei=BLKdadq3LLaqhbIPzragwA8&iflsig=AFdpzrgAAAAAaZ3AFL2ezFHOqyq6tcPQ6Fw2h1ZQVL9b&aep=22&udm=50&ved=0ahUKEwjayeLsp_KSAxU2VUEAHU4bCPgQteYPCBc&oq=&gs_lp=Egdnd3Mtd2l6IgBIAFAAWABwAHgAkAEAmAEAoAEAqgEAuAEByAEAmAIAoAIAmAMAkgcAoAcAsgcAuAcAwgcAyAcAgAgA&sclient=gws-wiz', type: 'web' },
+
+            // --- ANGOLA (GOVERNO & SERVIÇOS) ---
+            { id: 'opac', name: 'Mediatecas', cat: 'Gov', icon: I.Layers, color: 'text-emerald-400', url: 'https://www.mediatecas.gov.ao/', type: 'web' }, 
+            { id: 'angola', name: 'Gov.ao', cat: 'Gov', icon: I.Grid, color: 'text-red-500', url: 'https://www.governo.gov.ao', type: 'web' },
+            { id: 'sepe', name: 'SEPE', cat: 'Gov', icon: I.Grid, color: 'text-red-500', url: 'https://sepe.gov.ao/', type: 'web' },
+            { id: 'imprensa', name: 'Imprensa', cat: 'Gov', icon: I.Grid, color: 'text-amber-400', url: 'https://www.imprensanacional.gov.ao/', type: 'web' },
+            { id: 'minfin', name: 'Minfin', cat: 'Gov', icon: I.Grid, color: 'text-blue-400', url: 'https://www.minfin.gov.ao/', type: 'web' },
+            { id: 'interior', name: 'Minint', cat: 'Gov', icon: I.Grid, color: 'text-blue-400', url: 'https://www.minint.gov.ao/', type: 'web' },
+            { id: 'med', name: 'Med', cat: 'Gov', icon: I.Grid, color: 'text-blue-400', url: 'https://www.med.gov.ao/', type: 'web' },
+            { id: 'mescti', name: 'Mescti', cat: 'Gov', icon: I.Grid, color: 'text-blue-400', url: 'https://www.mescti.gov.ao/', type: 'web' },
+            
+            // --- CIÊNCIA & PESQUISA ---
+            { id: 'scholar', name: 'Scholar', cat: 'Science', icon: I.Globe, color: 'text-blue-400', url: 'https://scholar.google.com', type: 'web' },
+            { id: 'scielo', name: 'SciELO', cat: 'Science', icon: I.Search, color: 'text-orange-400', url: 'https://scielo.org', type: 'web' },
+            { id: 'pubmed', name: 'PubMed', cat: 'Science', icon: I.Search, color: 'text-blue-300', url: 'https://pubmed.ncbi.nlm.nih.gov/', type: 'web' },
+            { id: 'wolfram', name: 'Wolfram', cat: 'Science', icon: I.Cpu, color: 'text-red-400', url: 'https://www.wolframalpha.com', type: 'web' },
+            { id: 'nasa', name: 'NASA', cat: 'Science', icon: I.Globe, color: 'text-slate-200', url: 'https://www.nasa.gov', type: 'web' },
+            
+            // --- EDUCAÇÃO (CURSOS & LIVROS) ---
+            { id: 'openstax', name: 'OpenStax', cat: 'Edu', icon: I.Layers, color: 'text-orange-300', url: 'https://openstax.org', type: 'web' },
+            { id: 'classcentral', name: 'ClassCentral', cat: 'Edu', icon: I.Grid, color: 'text-blue-300', url: 'https://www.classcentral.com', type: 'web' },
+            { id: 'tecla', name: 'Tecla Edu', cat: 'Edu', icon: I.Cpu, color: 'text-green-400', url: 'https://tecla-lite.netlify.app/', type: 'web' },
+            { id: 'khan', name: 'Khan', cat: 'Edu', icon: I.Terminal, color: 'text-green-400', url: 'https://pt.khanacademy.org', type: 'web' },
+            { id: 'coursera', name: 'Coursera', cat: 'Edu', icon: I.Terminal, color: 'text-blue-500', url: 'https://www.coursera.org', type: 'web' },
+            { id: 'mit', name: 'MIT Open', cat: 'Edu', icon: I.Cpu, color: 'text-red-600', url: 'https://ocw.mit.edu', type: 'web' },
+            { id: 'ted', name: 'TED Talks', cat: 'Edu', icon: I.Play, color: 'text-red-500', url: 'https://www.ted.com', type: 'web' },
+            { id: 'scratch', name: 'Scratch', cat: 'Edu', icon: I.Code, color: 'text-yellow-400', url: 'https://scratch.mit.edu', type: 'web' },
+            
+            // --- FERRAMENTAS & UTILITÁRIOS (ESSENCIAIS) ---
+            { id: 'ilovepdf', name: 'iLovePDF', cat: 'Tools', icon: I.FileText, color: 'text-red-500', url: 'https://www.ilovepdf.com', type: 'web' },
+            { id: 'virustotal', name: 'VirusTotal', cat: 'Tools', icon: I.Shield, color: 'text-blue-600', url: 'https://www.virustotal.com', type: 'web' },
+            { id: 'convertio', name: 'Convertio', cat: 'Tools', icon: I.Rotate, color: 'text-gray-200', url: 'https://convertio.co', type: 'web' },
+            { id: 'fast', name: 'Fast.com', cat: 'Tools', icon: I.Wifi, color: 'text-green-500', url: 'https://fast.com', type: 'web' },
+            { id: 'photopea', name: 'Photopea', cat: 'Tools', icon: I.Layers, color: 'text-teal-400', url: 'https://www.photopea.com', type: 'web' },
+            { id: 'tinywow', name: 'TinyWow', cat: 'Tools', icon: I.Grid, color: 'text-purple-400', url: 'https://tinywow.com', type: 'web' },
+            { id: 'desmos', name: 'Desmos', cat: 'Tools', icon: I.Cpu, color: 'text-green-500', url: 'https://www.desmos.com/calculator', type: 'web' },
+            { id: 'deepl', name: 'DeepL', cat: 'Tools', icon: I.Globe, color: 'text-blue-600', url: 'https://www.deepl.com/translator', type: 'web' },
+            { id: 'drawio', name: 'Draw.io', cat: 'Tools', icon: I.Edit, color: 'text-orange-400', url: 'https://app.diagrams.net', type: 'web' },
+            { id: 'replit', name: 'Replit', cat: 'Tools', icon: I.Terminal, color: 'text-white', url: 'https://replit.com', type: 'web' },
+            { id: 'canvas', name: 'Canva', cat: 'Tools', icon: I.Terminal, color: 'text-white', url: 'https://www.canva.com/pt_pt/', type: 'web' },
+
+            // --- CULTURA & ARTES ---
+            { id: 'arts', name: 'Google Arts', cat: 'Culture', icon: I.Globe, color: 'text-yellow-500', url: 'https://artsandculture.google.com', type: 'web' },
+            { id: 'camoes', name: 'Camões IP', cat: 'Culture', icon: I.Layers, color: 'text-red-400', url: 'https://cvc.instituto-camoes.pt/biblioteca-digital.html', type: 'web' },
+            { id: 'wiki', name: 'Wikipédia', cat: 'Culture', icon: I.Globe, color: 'text-slate-200', url: 'https://pt.wikipedia.org/wiki/Página_principal', type: 'web' },
+            { id: 'gutenberg', name: 'Gutenberg', cat: 'Culture', icon: I.Layers, color: 'text-amber-200', url: 'https://www.gutenberg.org', type: 'web' },
+            { id: 'archive', name: 'Archive', cat: 'Culture', icon: I.Layers, color: 'text-slate-400', url: 'https://archive.org', type: 'web' },
+            { id: 'duolingo', name: 'Duolingo', cat: 'Culture', icon: I.Globe, color: 'text-green-500', url: 'https://www.duolingo.com', type: 'web' },
+            { id: 'behance', name: 'Behance', cat: 'Culture', icon: I.Grid, color: 'text-blue-500', url: 'https://www.behance.net', type: 'web' },
+            { id: 'pexels', name: 'Pexels', cat: 'Culture', icon: I.Layers, color: 'text-green-300', url: 'https://www.pexels.com', type: 'web' },
+        ];
+
+        // --- ENGINE DE SOM ---
+        const playBeep = () => {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(440, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.5);
+            } catch (e) { console.error("Audio blocked"); }
+        };
+
+        // --- MÓDULOS NATIVOS ---
+
+        const AppGenesis = () => {
+            const [tab, setTab] = useState('creator');
+            
+            // KÓDEX: Estado do Uplink de Email
+            const [contactMode, setContactMode] = useState(null); // Define qual email foi escolhido
+            const [email, setEmail] = useState('');
+            const [msg, setMsg] = useState('');
+            const [formStatus, setFormStatus] = useState('idle');
+
+            const handleSendEmail = async (e) => {
+                e.preventDefault();
+                const form = e.target;
+                setFormStatus('loading');
+                
+                // OTIMIZAÇÃO KÓDEX: Utilização de FormData para compatibilidade total com FormSubmit
+                const formData = new FormData(form);
+
+                try {
+                    // Transmissão in-app invisível
+                    const response = await fetch(`https://formsubmit.co/ajax/${contactMode}`, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json'
+                        },
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    if(data.success === "true" || data.success === true) {
+                        setFormStatus('success');
+                        setEmail('');
+                        setMsg('');
+                        setTimeout(() => { setFormStatus('idle'); setContactMode(null); }, 4000); // Retorna aos botões de prestígio após o sucesso
+                    } else {
+                        throw new Error("Falha no gateway");
+                    }
+                } catch(err) {
+                    console.warn("KÓDEX: Transmissão silenciosa retida. Acionando bypass de ativação...");
+                    // BYPASS: Se a API falhar (normalmente por necessitar de ativação), 
+                    // submete o formulário nativamente para abrir a página de autorização do FormSubmit
+                    setFormStatus('fallback');
+                    setTimeout(() => {
+                        form.submit();
+                        setFormStatus('idle');
+                        setEmail('');
+                        setMsg('');
+                        setContactMode(null);
+                    }, 1500);
+                }
+            };
+
+            return (
+                <div className="h-full flex flex-col bg-[#050505] text-slate-200 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+                    <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+                    <div className="flex items-center justify-center gap-2 p-4 border-b border-slate-800/50 backdrop-blur-md z-10">
+                        {['creator', 'legal', 'contact'].map(id => (
+                            <button key={id} onClick={() => setTab(id)} className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-xs sm:text-sm ${tab === id ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>
+                                <Icon p={id === 'creator' ? I.User : (id === 'legal' ? I.Shield : I.Mail)} s={14} /> 
+                                {id === 'creator' ? 'Arquiteto' : (id === 'legal' ? 'Legal' : 'Conexão')}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="flex-1 overflow-y-auto custom-scroll p-4 sm:p-8 max-w-4xl mx-auto w-full z-10">
+                        {tab === 'creator' && (
+                            <div className="flex flex-col items-center text-center animate-window">
+                                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-amber-400 to-indigo-600 p-1 mb-6 shadow-2xl shadow-indigo-500/20">
+                                    <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center overflow-hidden"><span className="text-2xl font-mono text-slate-500">DC</span></div>
+                                </div>
+                                <h2 className="text-2xl sm:text-3xl font-light tracking-tight mb-2">Dala De Carvalho</h2>
+                                <p className="text-indigo-400 font-mono text-[10px] sm:text-xs uppercase tracking-widest mb-8">Arquiteto de Sistemas Soberanos</p>
+                                <div className="max-w-xl text-slate-400 leading-relaxed space-y-4 text-xs sm:text-sm text-left sm:text-center">
+                                    <p>O <strong className="text-white">AFROKÓDICA OS</strong> não é apenas software; é a manifestação digital de uma visão: a de que o conhecimento deve ser soberano, acessível e livre de ruído.</p>
+                                    <p>Criado para elevar a experiência da Mediateca Abel Abraão e expandir-se para o mundo, este sistema reflete a busca incessante pela excelência e pela evolução contínua.</p>
+                                </div>
+                                <div className="mt-12 opacity-50 font-sign text-xl text-amber-500/80">Dala De Carvalho</div>
+                            </div>
+                        )}
+                        {tab === 'legal' && (
+                            <div className="space-y-8 animate-window">
+                                <section>
+                                    <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2"><Icon p={I.Shield} s={18} c="text-emerald-500"/> Termos de Uso</h3>
+                                    <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-2">
+                                        <p>1. O AFROKÓDICA OS é fornecido como uma ferramenta de empoderamento educacional.</p>
+                                        <p>2. A privacidade do utilizador é absoluta. Nenhum dado pessoal é comercializado.</p>
+                                        <p>3. O uso desta plataforma destina-se exclusivamente a fins de pesquisa, estudo e evolução pessoal.</p>
+                                    </div>
+                                </section>
+                                <section>
+                                    <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2"><Icon p={I.FileText} s={18} c="text-blue-500"/> Privacidade</h3>
+                                    <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-2">
+                                        <p>Nós não rastreamos. Nós não vendemos. Nós protegemos.</p>
+                                        <p>Todo o processamento de notas (Códice) e temporizadores (Cronos) ocorre localmente no seu dispositivo. A soberania dos seus dados pertence-lhe.</p>
+                                    </div>
+                                </section>
+                            </div>
+                        )}
+                        {tab === 'contact' && (
+                            <div className="flex flex-col items-center justify-center h-full animate-window w-full">
+                                {!contactMode ? (
+                                    <>
+                                        <h3 className="text-lg sm:text-xl font-light mb-8 text-center">Conecte-se com a <span className="text-indigo-500 font-bold">Afrokódica</span></h3>
+                                        <div className="grid grid-cols-1 gap-4 w-full max-w-sm px-4">
+                                            <button onClick={() => setContactMode('afrokodica@gmail.com')} className="bg-slate-900 p-6 rounded-xl border border-slate-800 hover:border-indigo-500 transition-colors cursor-pointer group flex items-center gap-4 w-full text-left">
+                                                <Icon p={I.Mail} s={24} c="text-slate-500 group-hover:text-white" />
+                                                <div><h4 className="font-bold text-white text-sm">Suporte Oficial</h4><p className="text-[10px] text-slate-500">afrokodica@gmail.com</p></div>
+                                            </button>
+                                            <button onClick={() => setContactMode('dala.cure.os@gmail.com')} className="bg-slate-900 p-6 rounded-xl border border-slate-800 hover:border-amber-500 transition-colors cursor-pointer group flex items-center gap-4 w-full text-left">
+                                                <Icon p={I.Grid} s={24} c="text-slate-500 group-hover:text-white" />
+                                                <div><h4 className="font-bold text-white text-sm">Parcerias</h4><p className="text-[10px] text-slate-500">dala.cure.os@gmail.com</p></div>
+                                            </button>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="w-full max-w-sm animate-slide-in px-4">
+                                        <button onClick={() => setContactMode(null)} className="mb-4 text-[10px] text-slate-400 hover:text-white flex items-center gap-1 transition-colors"><Icon p={I.Rotate} s={12}/> VOLTAR</button>
+                                        
+                                        {/* KÓDEX: Formulário preparado para Bypass Nativo sem quebrar o OS */}
+                                        <form 
+                                            action={`https://formsubmit.co/${contactMode}`}
+                                            method="POST"
+                                            target="_blank"
+                                            onSubmit={handleSendEmail} 
+                                            className="bg-slate-900/80 p-5 rounded-xl border border-slate-800 shadow-2xl space-y-4 backdrop-blur-md relative overflow-hidden"
+                                        >
+                                            
+                                            <div className="flex gap-2 mb-2 border-b border-white/10 pb-3">
+                                                <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                                                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+                                                <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                                                <span className="ml-3 text-slate-500 text-[10px] flex-1 font-mono truncate">
+                                                    uplink_{contactMode === 'afrokodica@gmail.com' ? 'suporte' : 'parceria'}.sh
+                                                </span>
+                                            </div>
+
+                                            {/* Configurações de Segurança e Organização FormSubmit */}
+                                            <input type="hidden" name="_captcha" value="false" />
+                                            <input type="hidden" name="_template" value="box" />
+                                            <input type="hidden" name="_subject" value={`[AFROKÓDICA OS] Sinal Recebido - ${contactMode === 'afrokodica@gmail.com' ? 'Suporte' : 'Parcerias'}`} />
+
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] text-indigo-400 uppercase tracking-widest font-mono">ID Operador (Email)</label>
+                                                {/* Adicionado o atributo 'name' obrigatório */}
+                                                <input type="email" name="email" required value={email} onChange={e => setEmail(e.target.value)} className="w-full bg-[#0a0a0c] border border-slate-700 rounded px-3 py-2.5 text-white text-xs focus:border-amber-500 focus:outline-none transition-colors font-mono" placeholder="seu_email@dominio.com" />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] text-indigo-400 uppercase tracking-widest font-mono">Carga (Mensagem)</label>
+                                                {/* Adicionado o atributo 'name' obrigatório */}
+                                                <textarea required name="message" value={msg} onChange={e => setMsg(e.target.value)} rows="3" className="w-full bg-[#0a0a0c] border border-slate-700 rounded px-3 py-2.5 text-white text-xs focus:border-amber-500 focus:outline-none transition-colors resize-none custom-scroll font-mono" placeholder="Insira a diretriz..."></textarea>
+                                            </div>
+                                            <button type="submit" disabled={formStatus === 'loading' || formStatus === 'fallback'} className={`w-full py-3 rounded text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${formStatus === 'loading' ? 'bg-amber-500 text-black animate-pulse' : formStatus === 'fallback' ? 'bg-yellow-500 text-black' : formStatus === 'success' ? 'bg-emerald-600 text-white' : formStatus === 'error' ? 'bg-red-600 text-white' : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-[0_0_15px_rgba(79,70,229,0.3)] hover:shadow-[0_0_25px_rgba(79,70,229,0.5)]'}`}>
+                                                {formStatus === 'loading' ? 'Estabelecendo Túnel...' : formStatus === 'fallback' ? 'Reencaminhando...' : formStatus === 'success' ? <><Icon p={I.Shield} s={14}/> Protocolo Entregue</> : formStatus === 'error' ? 'Falha. Reiniciar.' : <><Icon p={I.Terminal} s={14}/> Iniciar Transmissão</>}
+                                            </button>
+                                        </form>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const AppCronos = ({ state, actions }) => {
+            const format = (s) => `${Math.floor(s / 60).toString().padStart(2, '0')}:${(s % 60).toString().padStart(2, '0')}`;
+            return (
+                <div className={`h-full flex flex-col items-center justify-center bg-slate-900 text-white p-4 sm:p-8 ${state.timeLeft === 0 ? 'animate-alarm' : ''}`}>
+                    <div className="text-6xl sm:text-8xl font-mono font-light tracking-tighter mb-8 bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent select-none">{format(state.timeLeft)}</div>
+                    {state.timeLeft === 0 && <div className="mb-4 text-red-400 font-bold animate-pulse text-sm">CICLO COMPLETADO</div>}
+                    <div className="flex gap-2 mb-8 bg-slate-800 p-1 rounded-lg">
+                        {['focus', 'short', 'long'].map(m => (
+                            <button key={m} onClick={() => actions.setMode(m)} className={`px-3 py-2 rounded-md text-[10px] sm:text-xs font-bold uppercase transition-all ${state.mode === m ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'}`}>{m}</button>
+                        ))}
+                    </div>
+                    <div className="flex gap-4">
+                        <button onClick={actions.toggle} className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-emerald-500 hover:bg-emerald-400 flex items-center justify-center transition-all shadow-lg shadow-emerald-500/20 active:scale-95"><Icon p={state.isActive ? I.Pause : I.Play} s={24} /></button>
+                        <button onClick={actions.reset} className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-slate-700 hover:bg-slate-600 flex items-center justify-center transition-all active:scale-95"><Icon p={I.Rotate} s={24} /></button>
+                    </div>
+                </div>
+            );
+        };
+
+        const AppCodice = () => {
+            const [text, setText] = useState(() => {
+                return localStorage.getItem('afrokodica_codice_html') || ':: KÓDEX SESSÃO INICIADA ::<br><br>';
+            });
+            const [config, setConfig] = useState(() => {
+                const saved = localStorage.getItem('afrokodica_codice_config');
+                return saved ? JSON.parse(saved) : { font: 'font-serif', size: 'text-sm', leading: 'leading-relaxed' };
+            });
+            const [library, setLibrary] = useState(() => {
+                const savedLib = localStorage.getItem('afrokodica_codice_library');
+                return savedLib ? JSON.parse(savedLib) : [];
+            });
+            const [showLibrary, setShowLibrary] = useState(false);
+            const [status, setStatus] = useState('Pronto');
+            const [filename, setFilename] = useState('notas_afrokodica');
+            const [clearConfirm, setClearConfirm] = useState(false);
+            const [showSettings, setShowSettings] = useState(false);
+            
+            const editorRef = useRef(null);
+
+            // HANDLE PASTE (SANITIZATION FIX)
+            const handlePaste = (e) => {
+                e.preventDefault();
+                const text = e.clipboardData.getData('text/plain');
+                document.execCommand('insertText', false, text);
+            };
+
+            const handleInput = () => {
+                if (editorRef.current) {
+                    const html = editorRef.current.innerHTML;
+                    setText(html);
+                    localStorage.setItem('afrokodica_codice_html', html);
+                    setStatus('Salvando...');
+                    setTimeout(() => setStatus('Pronto'), 1000);
+                }
+            };
+
+            useEffect(() => {
+                if (editorRef.current && editorRef.current.innerHTML !== text) {
+                    editorRef.current.innerHTML = text;
+                }
+            }, []); 
+
+            useEffect(() => {
+                localStorage.setItem('afrokodica_codice_config', JSON.stringify(config));
+            }, [config]);
+
+            useEffect(() => {
+                localStorage.setItem('afrokodica_codice_library', JSON.stringify(library));
+            }, [library]);
+
+            const execCmd = (command, value = null) => {
+                document.execCommand(command, false, value);
+                if (editorRef.current) editorRef.current.focus();
+                handleInput();
+            };
+
+            const handleDownload = () => {
+                try {
+                    const fullContent = `
+                        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                        <head><meta charset='utf-8'><title>${filename}</title></head>
+                        <body>${text}</body>
+                        </html>
+                    `;
+                    const blob = new Blob([fullContent], { type: 'application/msword;charset=utf-8' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `${filename}.doc`; 
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    setStatus('Exportado');
+                    setTimeout(() => setStatus('Pronto'), 2000);
+                } catch (e) { console.error(e); }
+            };
+
+            const saveToLibrary = () => {
+                if (!filename.trim()) { setStatus('Nome inválido'); return; }
+                const newFile = {
+                    id: Date.now(),
+                    name: filename,
+                    content: text,
+                    date: new Date().toLocaleString('pt-AO')
+                };
+                const existingIndex = library.findIndex(f => f.name === filename);
+                let newLib;
+                if (existingIndex >= 0) {
+                    newLib = [...library];
+                    newLib[existingIndex] = newFile;
+                } else {
+                    newLib = [newFile, ...library];
+                }
+                setLibrary(newLib);
+                
+                // LÓGICA DE LIMPEZA AUTOMÁTICA PÓS-SALVAMENTO
+                setText(''); // Limpa o estado
+                if (editorRef.current) editorRef.current.innerHTML = ''; // Limpa o editor visual
+                localStorage.removeItem('afrokodica_codice_html'); // Remove o rascunho persistente
+                setFilename('novo_documento'); // Reseta o nome para evitar sobrescrita acidental
+                
+                setStatus('Arquivado e Limpo');
+                setTimeout(() => setStatus('Pronto'), 2000);
+            };
+
+            const loadFile = (file) => {
+                setText(file.content);
+                if (editorRef.current) editorRef.current.innerHTML = file.content;
+                setFilename(file.name);
+                setShowLibrary(false);
+                setStatus('Carregado');
+            };
+
+            const deleteFile = (id, e) => {
+                e.stopPropagation();
+                setLibrary(library.filter(f => f.id !== id));
+            };
+
+            const createNew = () => {
+                const newText = '';
+                setText(newText);
+                if (editorRef.current) editorRef.current.innerHTML = newText;
+                setFilename('novo_documento');
+                setShowLibrary(false);
+                setStatus('Novo Arquivo');
+            };
+
+            const insertTimestamp = () => {
+                const now = new Date().toLocaleString('pt-AO');
+                execCmd('insertText', ` [${now}] `);
+            };
+
+            const copyToClipboard = () => {
+                try {
+                    const textArea = document.createElement("textarea");
+                    textArea.value = editorRef.current.innerText; // Get plain text
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    setStatus('Copiado');
+                } catch (err) {
+                    console.error('Falha ao copiar', err);
+                    setStatus('Erro');
+                }
+                setTimeout(() => setStatus('Pronto'), 2000);
+            };
+
+            const handleClear = () => {
+                if (!clearConfirm) {
+                    setClearConfirm(true);
+                    setStatus('CONFIRMAR LIMPEZA?');
+                    setTimeout(() => {
+                        setClearConfirm(false);
+                        setStatus('Pronto');
+                    }, 3000);
+                } else {
+                    const empty = '';
+                    setText(empty);
+                    if (editorRef.current) editorRef.current.innerHTML = empty;
+                    localStorage.removeItem('afrokodica_codice_html');
+                    setClearConfirm(false);
+                    setStatus('Limpo');
+                }
+            };
+
+            const wordCount = text.replace(/<[^>]*>/g, ' ').trim().split(/\s+/).filter(w => w.length > 0).length;
+
+            return (
+                <div className="h-full flex flex-col bg-[#1e1e1e] text-slate-300 font-mono relative overflow-hidden">
+                    {/* Toolbar Superior */}
+                    <div className="h-10 bg-[#252526] flex items-center justify-between px-4 border-b border-black select-none z-20 shrink-0">
+                        <div className="flex items-center gap-3 w-2/3 overflow-hidden">
+                            <button onClick={() => setShowLibrary(!showLibrary)} className={`hover:text-white transition-colors ${showLibrary ? 'text-indigo-400' : ''}`} title="Biblioteca"><Icon p={I.Layers} s={14} /></button>
+                            <div className="h-3 w-px bg-slate-700 mx-1"></div>
+                            <input 
+                                type="text" 
+                                value={filename} 
+                                onChange={(e) => setFilename(e.target.value)}
+                                className="bg-transparent text-[10px] text-slate-400 uppercase tracking-wider focus:text-white focus:outline-none w-20 sm:w-auto truncate font-bold"
+                                title="Nome do Arquivo"
+                            />
+                            <div className="h-3 w-px bg-slate-700 mx-2"></div>
+                            
+                            {/* Rich Text Tools */}
+                            <div className="flex items-center gap-2">
+                                <button onClick={() => execCmd('bold')} className="hover:text-white transition-colors" title="Negrito"><b>B</b></button>
+                                <button onClick={() => execCmd('italic')} className="hover:text-white transition-colors font-serif italic" title="Itálico">I</button>
+                                <button onClick={() => execCmd('underline')} className="hover:text-white transition-colors underline" title="Sublinhado">U</button>
+                                <button onClick={() => execCmd('insertUnorderedList')} className="hover:text-white transition-colors" title="Lista"><Icon p={I.List} s={14} /></button>
+                            </div>
+
+                            <div className="h-3 w-px bg-slate-700 mx-2"></div>
+                            
+                            <button onClick={() => setShowSettings(!showSettings)} className={`hover:text-white transition-colors ${showSettings ? 'text-indigo-400' : ''}`} title="Visual"><Icon p={I.Type} s={14} /></button>
+                            <button onClick={insertTimestamp} className="hover:text-white transition-colors" title="Data/Hora"><Icon p={I.Clock} s={14} /></button>
+                            <button onClick={handleClear} className={`hover:text-white transition-colors ${clearConfirm ? 'text-red-500 animate-pulse' : ''}`} title="Limpar"><Icon p={I.Trash} s={14} /></button>
+                        </div>
+                        <div className="flex gap-2">
+                            <button onClick={saveToLibrary} className="flex items-center gap-2 text-[10px] bg-slate-700 hover:bg-slate-600 hover:text-white px-2 py-1 rounded transition-all text-slate-300 border border-slate-600" title="Salvar na Biblioteca">
+                                SALVAR
+                            </button>
+                            <button onClick={handleDownload} className="flex items-center gap-2 text-[10px] bg-indigo-600/20 hover:bg-indigo-600 hover:text-white px-2 py-1 rounded transition-all text-indigo-300 border border-indigo-500/30" title="Download">
+                                <Icon p={I.Save} s={12} />
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Painel de Formatação (Flutuante) */}
+                    {showSettings && (
+                        <div className="absolute top-10 left-0 w-full bg-[#252526] border-b border-black p-2 flex flex-wrap gap-4 z-10 text-[10px] shadow-lg animate-window">
+                            <div className="flex items-center gap-2">
+                                <span className="text-slate-500 uppercase tracking-wider">Fonte</span>
+                                <button onClick={() => setConfig({...config, font: 'font-mono'})} className={`px-2 py-1 rounded ${config.font === 'font-mono' ? 'bg-indigo-600 text-white' : 'bg-white/5 hover:bg-white/10'}`}>Digital</button>
+                                <button onClick={() => setConfig({...config, font: 'font-sans'})} className={`px-2 py-1 rounded ${config.font === 'font-sans' ? 'bg-indigo-600 text-white' : 'bg-white/5 hover:bg-white/10'}`}>Moderno</button>
+                                <button onClick={() => setConfig({...config, font: 'font-serif'})} className={`px-2 py-1 rounded ${config.font === 'font-serif' ? 'bg-indigo-600 text-white' : 'bg-white/5 hover:bg-white/10'}`}>Editorial</button>
+                            </div>
+                            <div className="w-px h-4 bg-slate-700"></div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-slate-500 uppercase tracking-wider">Tamanho</span>
+                                <button onClick={() => setConfig({...config, size: 'text-xs'})} className={`px-2 py-1 rounded ${config.size === 'text-xs' ? 'bg-indigo-600 text-white' : 'bg-white/5 hover:bg-white/10'}`}>P</button>
+                                <button onClick={() => setConfig({...config, size: 'text-sm'})} className={`px-2 py-1 rounded ${config.size === 'text-sm' ? 'bg-indigo-600 text-white' : 'bg-white/5 hover:bg-white/10'}`}>M</button>
+                                <button onClick={() => setConfig({...config, size: 'text-base'})} className={`px-2 py-1 rounded ${config.size === 'text-base' ? 'bg-indigo-600 text-white' : 'bg-white/5 hover:bg-white/10'}`}>G</button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Biblioteca Interna */}
+                    {showLibrary && (
+                        <div className="absolute top-10 bottom-6 left-0 w-64 bg-[#1a1a1a] border-r border-black z-20 shadow-2xl animate-slide-in flex flex-col">
+                            <div className="p-3 border-b border-white/5 flex justify-between items-center bg-[#202020]">
+                                <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">Biblioteca</span>
+                                <button onClick={createNew} className="text-[10px] bg-indigo-600 px-2 py-1 rounded text-white hover:bg-indigo-500 flex items-center gap-1"><Icon p={I.Plus} s={10} /> NOVO</button>
+                            </div>
+                            <div className="flex-1 overflow-y-auto custom-scroll p-2 space-y-1">
+                                {library.length === 0 && <div className="text-[10px] text-slate-600 text-center mt-4">Vazia.</div>}
+                                {library.map(file => (
+                                    <div key={file.id} onClick={() => loadFile(file)} className="group p-2 rounded hover:bg-white/5 cursor-pointer border border-transparent hover:border-white/5 transition-all">
+                                        <div className="flex justify-between items-start">
+                                            <span className="text-xs text-slate-300 font-bold truncate w-32 block">{file.name}</span>
+                                            <button onClick={(e) => deleteFile(file.id, e)} className="text-slate-600 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><Icon p={I.Trash} s={12} /></button>
+                                        </div>
+                                        <span className="text-[10px] text-slate-500 block mt-1">{file.date}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Área de Edição Rica (WYSIWYG) */}
+                    <div 
+                        ref={editorRef}
+                        className={`flex-1 bg-[#1e1e1e] p-6 outline-none overflow-y-auto custom-scroll text-slate-300 editor-content ${config.font} ${config.size} ${config.leading}`}
+                        contentEditable={true}
+                        onInput={handleInput}
+                        onPaste={handlePaste} // SANITIZAÇÃO DE PASTE AQUI
+                        spellCheck="false"
+                    />
+
+                    {/* Barra de Status Inferior */}
+                    <div className="h-6 bg-[#007acc] text-white flex items-center justify-between px-3 text-[10px] select-none z-20 shrink-0">
+                        <div className="flex gap-4 opacity-90">
+                            <span>HTML Mode</span>
+                            <span>UTF-8</span>
+                        </div>
+                        <div className="flex gap-4 font-bold">
+                            <span>~{wordCount} palavras</span>
+                            <span className="opacity-75 uppercase tracking-wide">{status}</span>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const AppWindow = ({ app, onClose, onMinimize, children, cronosProps }) => {
+            const [loading, setLoading] = useState(app.type === 'web');
+            const [blocked, setBlocked] = useState(false);
+            const [isMaximized, setIsMaximized] = useState(false);
+
+            useEffect(() => {
+                if (app.type === 'web') {
+                    const isSecureContext = window.location.protocol === 'https:';
+                    const targetIsInsecure = app.url.startsWith('http://');
+                    if (isSecureContext && targetIsInsecure) { setBlocked(true); setLoading(false); } 
+                    else { const timer = setTimeout(() => setLoading(false), 3000); return () => clearTimeout(timer); }
+                }
+            }, [app]);
+
+            const windowClass = isMaximized 
+                ? "absolute inset-0 z-40 flex flex-col glass animate-window" 
+                : "absolute inset-2 top-12 bottom-24 md:inset-20 z-40 flex flex-col glass rounded-xl overflow-hidden animate-window shadow-2xl border border-indigo-500/20";
+
+            return (
+                <div className={windowClass}>
+                    <div className="h-10 bg-slate-950 flex items-center justify-between px-4 border-b border-slate-800 select-none" onDoubleClick={() => setIsMaximized(!isMaximized)}>
+                        <div className="flex items-center gap-3">
+                            <div className="flex gap-2 group">
+                                <button onClick={onClose} title="Fechar" className="w-8 h-8 md:w-3 md:h-3 rounded-full bg-red-500 hover:bg-red-400 text-transparent text-[8px] flex items-center justify-center md:group-hover:text-black/50 active:scale-95">×</button>
+                                <button onClick={onMinimize} title="Minimizar" className="w-8 h-8 md:w-3 md:h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 text-transparent text-[8px] flex items-center justify-center md:group-hover:text-black/50 active:scale-95">-</button>
+                                <button onClick={() => setIsMaximized(!isMaximized)} title="Maximizar" className="w-8 h-8 md:w-3 md:h-3 rounded-full bg-green-500 hover:bg-green-400 text-transparent text-[8px] flex items-center justify-center md:group-hover:text-black/50 active:scale-95">+</button>
+                            </div>
+                            <div className="h-4 w-px bg-slate-800 mx-2"></div>
+                            <span className="text-xs font-mono text-slate-400 flex items-center gap-2 truncate max-w-[150px]">
+                                <Icon p={app.type === 'web' ? I.Globe : (app.id === 'genesis' ? I.User : (app.id === 'ia_search' ? I.Bot : I.Cpu))} s={12} /> {app.name}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="flex-1 bg-slate-900 relative overflow-hidden">
+                        {app.type === 'native' ? (
+                            // ROTEAMENTO DE APPS NATIVAS
+                            app.id === 'focus' ? <AppCronos {...cronosProps} /> : (app.id === 'notes' ? <AppCodice /> : <AppGenesis />)
+                        ) : (
+                            <>
+                                {!blocked && loading && (
+                                    <div className="absolute inset-0 bg-slate-900 z-10 flex flex-col items-center justify-center">
+                                        <div className="w-6 h-6 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4" />
+                                        <p className="text-[10px] font-mono text-indigo-400 animate-pulse">ESTABELECENDO TÚNEL...</p>
+                                    </div>
+                                )}
+                                
+                                {!blocked && (
+                                    <iframe 
+                                        src={app.url} 
+                                        className="w-full h-full border-0"
+                                        onLoad={() => setLoading(false)}
+                                        onError={() => setBlocked(true)}
+                                        title={app.name}
+                                    />
+                                )}
+                                
+                                {(blocked || !loading) && (
+                                    <div className={`absolute bottom-6 left-1/2 -translate-x-1/2 w-auto pointer-events-none transition-opacity duration-500 ${blocked ? 'opacity-100' : 'opacity-0 hover:opacity-100'}`}>
+                                         <div className="glass bg-slate-900/90 px-5 py-3 rounded-lg flex items-center gap-4 pointer-events-auto transform transition-transform hover:scale-105 border border-slate-700 shadow-xl max-w-[90vw]">
+                                            <div className="p-2 bg-amber-500/10 rounded-full text-amber-500 shrink-0"><Icon p={I.Ext} s={16} /></div>
+                                            <div className="flex flex-col">
+                                                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{blocked ? 'Protocolo de Segurança' : 'Visualização Externa'}</span>
+                                                <span className="text-xs text-slate-300">{blocked ? 'Conexão segura necessita de isolamento.' : 'Abrir em nova aba?'}</span>
+                                            </div>
+                                            <div className="w-px h-6 bg-slate-700 mx-1"></div>
+                                            <a href={app.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-indigo-400 hover:text-white transition-colors bg-indigo-500/10 px-3 py-1.5 rounded-md hover:bg-indigo-600 shrink-0">
+                                                ABRIR
+                                            </a>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const BootScreen = ({ onComplete }) => {
+            const [progress, setProgress] = useState(0);
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setProgress(p => { if (p >= 100) { clearInterval(interval); setTimeout(onComplete, 800); return 100; } return p + Math.random() * 20; });
+                }, 150);
+                return () => clearInterval(interval);
+            }, [onComplete]);
+            return (
+                <div className="fixed inset-0 bg-black z-[100] flex flex-col items-center justify-center text-white">
+                    <div className="animate-boot mb-8">
+                        <div className="w-24 h-24 bg-gradient-to-tr from-indigo-600 to-amber-500 rounded-3xl flex items-center justify-center text-5xl font-bold font-sign shadow-2xl shadow-indigo-500/20">A</div>
+                    </div>
+                    <div className="w-64 h-1 bg-slate-900 rounded-full overflow-hidden">
+                        <div className="h-full bg-white transition-all duration-300" style={{ width: `${progress}%` }}></div>
+                    </div>
+                    <div className="mt-6 font-mono text-xs text-slate-500 tracking-[0.3em] uppercase">AFROKÓDICA OS LOADING...</div>
+                </div>
+            );
+        };
+
+        const NexoOS = () => {
+            const [booted, setBooted] = useState(false);
+            const [activeApp, setActiveApp] = useState(null);
+            const [minimizedApps, setMinimizedApps] = useState([]);
+            const [time, setTime] = useState(new Date());
+            const [search, setSearch] = useState('');
+            const [isFullscreen, setIsFullscreen] = useState(false);
+            const [selectedCategory, setSelectedCategory] = useState('All'); // NEW CATEGORY STATE
+            
+            const [cronosState, setCronosState] = useState({ timeLeft: 1500, isActive: false, mode: 'focus' });
+            useEffect(() => {
+                let interval = null;
+                if (cronosState.isActive && cronosState.timeLeft > 0) interval = setInterval(() => setCronosState(prev => ({ ...prev, timeLeft: prev.timeLeft - 1 })), 1000);
+                else if (cronosState.timeLeft === 0 && cronosState.isActive) { setCronosState(prev => ({ ...prev, isActive: false })); playBeep(); }
+                return () => clearInterval(interval);
+            }, [cronosState.isActive, cronosState.timeLeft]);
+
+            const cronosActions = { toggle: () => setCronosState(p => ({ ...p, isActive: !p.isActive })), reset: () => setCronosState(p => ({ ...p, isActive: false, timeLeft: p.mode === 'focus' ? 1500 : p.mode === 'short' ? 300 : 900 })), setMode: (m) => setCronosState({ mode: m, isActive: false, timeLeft: m === 'focus' ? 1500 : m === 'short' ? 300 : 900 }) };
+
+            useEffect(() => { const t = setInterval(() => setTime(new Date()), 1000); return () => clearInterval(t); }, []);
+
+            const toggleFullscreen = async () => { 
+                try { 
+                    if (!document.fullscreenElement) { 
+                        await document.documentElement.requestFullscreen(); 
+                        setIsFullscreen(true); 
+                    } else { 
+                        if (document.exitFullscreen) await document.exitFullscreen(); 
+                        setIsFullscreen(false); 
+                    } 
+                } catch (err) { 
+                    console.warn("Fullscreen permission/event denied"); 
+                } 
+            };
+
+            const launch = (app) => { if (minimizedApps.includes(app.id)) setMinimizedApps(prev => prev.filter(id => id !== app.id)); setActiveApp(app); };
+            const finishBoot = useCallback(() => setBooted(true), []);
+
+            // --- CATEGORY LOGIC ---
+            const categories = useMemo(() => {
+                const cats = ['All', 'System', 'Gov', 'Edu', 'Science', 'Tools', 'Culture', 'IA'];
+                return cats;
+            }, []);
+
+            const filteredApps = useMemo(() => {
+                return SYSTEM_APPS.filter(app => {
+                    const matchesCategory = selectedCategory === 'All' || app.cat === selectedCategory;
+                    const matchesSearch = app.name.toLowerCase().includes(search.toLowerCase());
+                    const isNotHidden = app.id !== 'genesis'; // Genesis is dock/button only
+                    return matchesCategory && matchesSearch && isNotHidden;
+                });
+            }, [selectedCategory, search]);
+
+            if (!booted) return <BootScreen onComplete={finishBoot} />;
+
+            return (
+                <div className="w-screen h-screen relative bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')] bg-cover bg-center overflow-hidden">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+
+                    <header className="absolute top-0 w-full h-8 md:h-10 bg-black/40 backdrop-blur-md flex items-center justify-between px-4 z-30 border-b border-white/5 text-[10px] sm:text-xs font-mono text-slate-400 select-none">
+                        <div className="flex items-center gap-2 md:gap-4"><span className="text-white font-bold tracking-widest truncate">AFROKÓDICA OS v3.8</span><span className="hidden md:inline text-emerald-500">● ONLINE</span></div>
+                        <div className="flex items-center gap-4 text-white"><button onClick={toggleFullscreen} className="hover:text-indigo-400 transition-colors"><Icon p={isFullscreen ? I.Shrink : I.Expand} s={14} /></button><div className="w-px h-3 bg-white/20"></div><span>{time.toLocaleTimeString()}</span></div>
+                    </header>
+
+                    <main className="relative z-10 w-full h-full pt-12 pb-24 px-4 flex flex-col items-center justify-center">
+                        {!activeApp && (
+                            <div className="flex flex-col items-center w-full max-w-5xl animate-window h-full justify-center">
+                                {/* TÍTULO ATUALIZADO KÓDEX */}
+                                <h1 className="text-4xl md:text-7xl font-bold text-white mb-2 tracking-widest text-center select-none font-brand">
+                                    AFROKÓDICA
+                                </h1>
+                                <p className="text-sm md:text-lg text-indigo-300 font-mono tracking-widest uppercase mb-8 opacity-80">
+                                    Conexão • Aprendizagem • Conhecimento Puro
+                                </p>
+
+                                <div className="w-full max-w-xl h-12 md:h-14 glass rounded-full flex items-center px-4 md:px-6 gap-4 mb-6 focus-within:ring-1 ring-indigo-500 transition-all">
+                                    <Icon p={I.Search} c="text-slate-400" />
+                                    <input type="text" className="bg-transparent w-full outline-none text-white placeholder-slate-600 text-sm md:text-base" placeholder="Pesquisar na rede..." value={search} onChange={(e) => setSearch(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && window.open(`https://scholar.google.com/scholar?q=${search}`, '_blank')} />
+                                </div>
+
+                                {/* CATEGORY TABS (VISUALMENTE REFORÇADO) */}
+                                <div className="flex gap-2 mb-6 overflow-x-auto max-w-full pb-2 no-scrollbar px-2 w-full justify-start md:justify-center mask-image-linear-gradient">
+                                    {categories.map(cat => (
+                                        <button 
+                                            key={cat}
+                                            onClick={() => setSelectedCategory(cat)}
+                                            className={`px-4 py-1.5 rounded-full text-[10px] md:text-xs font-mono tracking-wide transition-all whitespace-nowrap border ${
+                                                selectedCategory === cat 
+                                                ? 'glass-active font-bold scale-105' 
+                                                : 'bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:text-white hover:border-white/30'
+                                            }`}
+                                        >
+                                            {cat === 'All' ? 'TODOS' : cat.toUpperCase()}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* GRID ESCALÁVEL */}
+                                <div className="w-full max-h-[50vh] overflow-y-auto custom-scroll p-2 md:p-4">
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+                                        {filteredApps.map(app => (
+                                            <button key={app.id} onClick={() => launch(app)} className="glass-light p-3 md:p-4 rounded-xl flex flex-col items-center gap-3 hover:bg-white/5 transition-all group active:scale-95 border border-transparent hover:border-white/5">
+                                                <div className={`p-2 md:p-3 rounded-lg bg-slate-900 ${app.color} group-hover:scale-110 transition-transform shadow-lg`}><Icon p={app.icon} s={20} /></div>
+                                                <span className="text-[10px] md:text-xs text-slate-300 font-medium truncate w-full text-center">{app.name}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {activeApp && <AppWindow app={activeApp} onClose={() => setActiveApp(null)} onMinimize={() => { setMinimizedApps([...minimizedApps, activeApp.id]); setActiveApp(null); }} cronosProps={{ state: cronosState, actions: cronosActions }} />}
+                    </main>
+
+                    <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 h-14 md:h-16 glass rounded-2xl px-2 md:px-4 flex items-center gap-1 md:gap-2 z-50 transition-transform hover:scale-105 max-w-[95vw] overflow-x-auto no-scrollbar">
+                        <button onClick={() => setActiveApp(null)} className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-white hover:bg-white/20 transition-all mr-1 md:mr-2 active:scale-95 shrink-0"><Icon p={I.Grid} /></button>
+                        <div className="w-px h-8 bg-white/10 mx-1 shrink-0"></div>
+                        {/* DOCK PRIORITY: Génese + Core */}
+                        {[SYSTEM_APPS.find(a => a.id === 'genesis'), ...SYSTEM_APPS.filter(a => a.id !== 'genesis').slice(0, 5)].map(app => {
+                            const isActive = activeApp?.id === app.id;
+                            const isMin = minimizedApps.includes(app.id);
+                            return (
+                                <button key={app.id} onClick={() => launch(app)} className={`relative group w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 active:scale-95 shrink-0 ${isActive ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
+                                    <Icon p={app.icon} />
+                                    {(isActive || isMin) && <div className={`absolute -bottom-1 w-1 h-1 rounded-full ${isActive ? 'bg-white' : 'bg-slate-500'}`}></div>}
+                                    <span className="hidden md:block absolute -top-10 bg-black text-[10px] text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">{app.name}</span>
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    <div className="absolute bottom-1 right-2 md:bottom-2 md:right-4 z-20 opacity-30 hover:opacity-100 transition-opacity cursor-pointer hidden sm:block" onClick={() => launch(SYSTEM_APPS.find(a => a.id === 'genesis'))}>
+                        <span className="text-[10px] font-mono text-white flex items-center gap-2"><Icon p={I.Code} s={10} /> DESENVOLVIDO POR AFROKÓDICA</span>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<NexoOS />);
+    </script>
+
+    <!-- INICIAÇÃO DO SERVICE WORKER (KÓDEX) -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('KÓDEX: Escudo Offline Ativado com sucesso.', registration.scope);
+                    })
+                    .catch(err => {
+                        console.log('KÓDEX: Falha na ignição offline:', err);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AFROKÓDICA OS | O Manifesto da Soberania Digital</title>
+    
+    <!-- Tailwind CSS (Engine Visual) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js (Dados Visualizados) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Cinzel:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #020203;
+            --accent: #fbbf24;
+            --primary: #4f46e5;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .brand-font { font-family: 'Cinzel', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        /* Glassmorphism Advanced */
+        .glass {
+            background: rgba(15, 15, 20, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.1s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(251, 191, 36, 0.3); /* Amber Glow */
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
+        }
+
+        /* Typography Effects */
+        .text-glow { text-shadow: 0 0 30px rgba(79, 70, 229, 0.5); }
+        .text-glow-amber { text-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
+
+        /* Chart Container */
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+
+        /* Neural Canvas Background */
+        #neural-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* Timeline Connector */
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 24px;
+            width: 2px;
+            background: linear-gradient(to bottom, #4f46e5, #fbbf24, transparent);
+            z-index: 0;
+        }
+    </style>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        amber: { 450: '#fbbf24' },
+                        indigo: { 550: '#4f46e5' },
+                        void: '#020203'
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
+
+    <!-- DYNAMIC BACKGROUND (Rede Neural) -->
+    <canvas id="neural-canvas"></canvas>
+
+    <!-- NAVIGATION -->
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-void/80 backdrop-blur-md transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3 group cursor-pointer" onclick="window.scrollTo(0,0)">
+                <div class="w-10 h-10 relative">
+                    <div class="absolute inset-0 bg-indigo-600 rounded-lg blur opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative w-full h-full bg-gradient-to-tr from-indigo-900 to-black rounded-lg border border-white/10 flex items-center justify-center font-bold text-white text-xl font-mono">
+                        A
+                    </div>
+                </div>
+                <span class="text-lg tracking-[0.2em] font-bold text-white brand-font group-hover:text-indigo-400 transition-colors">AFROKÓDICA</span>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-8 text-xs font-mono tracking-widest text-slate-400">
+                <a href="#manifesto" class="hover:text-white transition-colors relative group">
+                    MANIFESTO
+                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-amber-400 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#arsenal" class="hover:text-white transition-colors relative group">
+                    ARSENAL
+                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-amber-400 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#architect" class="hover:text-white transition-colors relative group">
+                    O ARQUITETO
+                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-amber-400 transition-all group-hover:w-full"></span>
+                </a>
+                
+                <!-- LINK DIRETO PARA O OS (Servidor) -->
+                <a href="./index.html" class="px-6 py-2 bg-white/5 hover:bg-indigo-600/20 border border-white/10 hover:border-indigo-500/50 rounded text-white transition-all duration-300 flex items-center gap-2 group shadow-[0_0_15px_rgba(79,70,229,0.1)] hover:shadow-[0_0_25px_rgba(79,70,229,0.4)]">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    INICIAR SISTEMA
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="relative min-h-screen flex items-center justify-center pt-20">
+        <div class="relative z-10 text-center px-4 max-w-6xl mx-auto perspective-1000">
+            
+            <div class="inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-[10px] font-mono tracking-widest uppercase animate-fade-in-up">
+                <span class="w-1.5 h-1.5 bg-indigo-400 rounded-full"></span>
+                Soberania Digital v3.8 Online
+            </div>
+
+            <h1 class="text-6xl md:text-9xl font-bold text-white mb-6 leading-none tracking-tight text-glow mix-blend-overlay opacity-90 animate-float">
+                AFROKÓDICA
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed font-light mb-12 mix-blend-screen">
+                O contra-movimento à dispersão digital. Um <span class="text-amber-400 font-serif italic">Santuário</span> arquitetado para devolver a soberania da atenção à mente humana.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <!-- Action Button -->
+                <a href="#manifesto" class="group relative px-8 py-4 bg-white text-black font-bold tracking-widest text-xs rounded overflow-hidden transition-all hover:scale-105 shadow-xl shadow-white/10">
+                    <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-amber-300 to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <span class="relative z-10 flex items-center gap-2">
+                        LER O MANIFESTO <span class="group-hover:translate-x-1 transition-transform">→</span>
+                    </span>
+                </a>
+                
+                <!-- Data Stat -->
+                <div class="flex items-center gap-4 px-6 py-4 glass rounded border border-white/5">
+                    <div class="text-left">
+                        <div class="text-[10px] text-slate-500 font-mono uppercase tracking-wider">Custos</div>
+                        <div class="text-xl font-bold text-white font-mono">$0.00</div>
+                    </div>
+                    <div class="w-px h-8 bg-white/10"></div>
+                    <div class="text-left">
+                        <div class="text-[10px] text-slate-500 font-mono uppercase tracking-wider">Privacidade</div>
+                        <div class="text-xl font-bold text-emerald-400 font-mono">100%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
+            <span class="text-[10px] font-mono text-slate-400 tracking-[0.3em]">EXPLORAR</span>
+            <div class="w-px h-12 bg-gradient-to-b from-transparent via-white to-transparent"></div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: MANIFESTO & DADOS (Comparações Reais) -->
+    <section id="manifesto" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                
+                <!-- Text Content (Baseado no Manifesto) -->
+                <div class="space-y-12">
+                    <div>
+                        <h2 class="text-4xl md:text-5xl text-white mb-6 brand-font leading-tight">
+                            A Cura para a <br /><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Dispersão Cognitiva</span>
+                        </h2>
+                        <p class="text-slate-400 leading-relaxed text-lg">
+                            Numa era onde cada clique é rastreado e a atenção é mercantilizada, o AFROKÓDICA OS opera como uma infraestrutura crítica de conhecimento.
+                        </p>
+                    </div>
+
+                    <div class="space-y-8">
+                        <div class="pl-6 border-l-2 border-indigo-500/30 hover:border-indigo-500 transition-colors cursor-default group">
+                            <h4 class="text-white font-bold mb-1 group-hover:text-indigo-400 transition-colors text-xl">Soberania de Dados</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">
+                                Arquitetura "Cliente-Lado". As notas (Códice) e temporizadores (Cronos) residem no seu dispositivo. Nada vai para a nuvem sem o seu comando.
+                            </p>
+                        </div>
+                        <div class="pl-6 border-l-2 border-amber-500/30 hover:border-amber-500 transition-colors cursor-default group">
+                            <h4 class="text-white font-bold mb-1 group-hover:text-amber-400 transition-colors text-xl">Aceleração Nacional</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">
+                                Centralização estratégica: Mediatecas, Gov.ao, SEPE e Scholar num único ecossistema unificado, reduzindo a fricção no acesso ao saber.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visualization -->
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-amber-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+                    <div class="glass p-8 rounded-2xl relative border border-white/5">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xs font-mono text-slate-400 uppercase tracking-widest">Métricas de Performance</h3>
+                            <div class="flex gap-2">
+                                <span class="w-3 h-3 rounded-full bg-indigo-500 shadow-[0_0_10px_#4f46e5]"></span>
+                                <span class="text-[10px] text-slate-400">AFROKÓDICA OS</span>
+                            </div>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="comparisonChart"></canvas>
+                        </div>
+                        <p class="text-[10px] text-center text-slate-600 mt-6 font-mono">DADOS BASEADOS NA ARQUITETURA STATIC-CORE v3.8</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: O ARSENAL (3D Tilt Cards) -->
+    <section id="arsenal" class="py-32 bg-black/40 relative overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-900/20 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20">
+                <div>
+                    <span class="text-amber-500 font-mono text-xs tracking-widest uppercase mb-2 block">Utilitários KÓDEX</span>
+                    <h2 class="text-4xl text-white brand-font">O Arsenal Nativo</h2>
+                </div>
+                <p class="text-slate-400 text-sm max-w-md text-right mt-4 md:mt-0 font-mono">
+                    Ferramentas de alta performance, desenhadas para funcionar offline e sem latência.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 perspective-1000">
+                
+                <!-- Card 1: Cronos -->
+                <div class="glass-card p-10 rounded-2xl group tilt-card" data-tilt>
+                    <div class="w-12 h-12 bg-slate-800/50 rounded-lg flex items-center justify-center text-2xl mb-8 text-white border border-white/10 group-hover:bg-indigo-600 group-hover:border-indigo-400 transition-all duration-300">
+                        ◷
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Cronos</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-8">
+                        Motor de gestão temporal profissional. Ciclos de foco profundo integrados no sistema operativo.
+                    </p>
+                    <div class="flex gap-2">
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-mono border border-white/5">FOCUS</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-mono border border-white/5">OFFLINE</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Códice -->
+                <div class="glass-card p-10 rounded-2xl group tilt-card" data-tilt>
+                    <div class="w-12 h-12 bg-slate-800/50 rounded-lg flex items-center justify-center text-2xl mb-8 text-white border border-white/10 group-hover:bg-amber-500 group-hover:border-amber-300 transition-all duration-300">
+                        ✎
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Códice</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-8">
+                        Bloco de notas soberano. Capture ideias instantaneamente e exporte ficheiros DOC diretamente para o dispositivo.
+                    </p>
+                    <div class="flex gap-2">
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-mono border border-white/5">LOCAL STORAGE</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-mono border border-white/5">EXPORT</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Gateway -->
+                <div class="glass-card p-10 rounded-2xl group tilt-card" data-tilt>
+                    <div class="w-12 h-12 bg-slate-800/50 rounded-lg flex items-center justify-center text-2xl mb-8 text-white border border-white/10 group-hover:bg-emerald-600 group-hover:border-emerald-400 transition-all duration-300">
+                        🛡
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Gateway</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-8">
+                        Escudo de segurança inteligente. Deteta links governamentais (HTTP) e gere protocolos de visualização automaticamente.
+                    </p>
+                    <div class="flex gap-2">
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-mono border border-white/5">SECURE</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-mono border border-white/5">TUNNEL</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: O ARQUITETO (Posicionamento Estratégico) -->
+    <section id="architect" class="py-24 bg-gradient-to-t from-black via-void to-transparent relative">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            
+            <!-- Architect Profile -->
+            <div class="relative">
+                <div class="absolute -left-10 -top-10 w-32 h-32 bg-amber-500/20 rounded-full blur-[60px]"></div>
+                
+                <div class="flex items-center gap-6 mb-8 relative z-10">
+                    <div class="relative w-24 h-24 rounded-full bg-slate-800 border-2 border-amber-500/30 shadow-2xl flex items-center justify-center overflow-hidden group">
+                        <!-- Fallback Initials -->
+                        <span class="text-3xl text-slate-500 font-mono absolute z-0 group-hover:scale-110 transition-transform">DC</span>
+                        <!-- Imagem do Arquiteto -->
+                        <img src="https://scontent-cpt1-1.xx.fbcdn.net/v/t39.30808-6/575188753_24593975443613651_7662764574770786017_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=7b2446&_nc_eui2=AeHiFIReiFcIi_jGiqk2YLg_A9VqjIRTlQoD1WqMhFOVCichpowH1-7oCL8FX1KlLG64HNIyOxcg9Fk8IDpd4FIU&_nc_ohc=k5PNBdUYOjEQ7kNvwHkjLvf&_nc_oc=AdlQMQ42s1mgJWEqQiOxon8TU8Ucqzo3bZaMNciCVRsb5jVXrep-Db-6riPZLUbkfrl4SCxHVpU_Y83wwvMX_MtP&_nc_zt=23&_nc_ht=scontent-cpt1-1.xx&_nc_gid=IFoumRSoXn29D90koMgX1g&oh=00_AfuMLruAxlhTINk9A6FgPx7CC8cShX-To_w_U3jD1lsr-A&oe=69A3B8EC" alt="Dala De Carvalho" class="w-full h-full object-cover relative z-10 transition-opacity duration-300" onerror="this.style.opacity='0'">
+                    </div>
+                    <div>
+                        <h3 class="text-3xl text-white font-bold brand-font">Dala De Carvalho</h3>
+                        <p class="text-amber-500 text-xs font-mono tracking-widest uppercase mt-1">Arquiteto de Sistemas Soberanos</p>
+                        <p class="text-slate-500 text-xs font-mono mt-1">Lead Architect @ Afrokódica</p>
+                    </div>
+                </div>
+                
+                <blockquote class="text-slate-300 italic border-l-2 border-indigo-500/50 pl-6 py-2 mb-8 text-lg leading-relaxed relative z-10">
+                    "A visão transcende o código. Dala opera na intersecção entre a Tecnologia de Alta Fidelidade e a Evolução Humana. A engenharia deve ser um ato de proteção e compaixão."
+                </blockquote>
+
+                <div class="space-y-4 text-sm text-slate-400 leading-relaxed">
+                    <p>O AFROKÓDICA OS é a prova viva de que é possível construir tecnologia pública de nível mundial, com estética refinada e utilidade brutal, sem custos insustentáveis.</p>
+                    <p>Uma oferenda para a elevação intelectual da nação.</p>
+                </div>
+            </div>
+
+            <!-- Terminal Contact Form (Imersivo) -->
+            <div class="glass p-1 rounded-xl shadow-2xl">
+                <div class="bg-black/90 p-8 rounded-lg font-mono text-sm h-full border border-white/5 relative overflow-hidden">
+                    <!-- Scanline effect -->
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent h-[10px] animate-[scan_3s_linear_infinite] pointer-events-none opacity-20"></div>
+
+                    <div class="flex gap-2 mb-6 border-b border-white/10 pb-4">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <span class="ml-4 text-slate-600 text-xs flex-1 text-center">uplink_terminal_v3.sh</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <p class="text-emerald-500">root@afrokodica:~# <span class="text-slate-300">iniciar_protocolo_contato</span></p>
+                        <p class="text-slate-400">> Estabelecendo canal seguro com o Arquiteto...</p>
+                        
+                        <!-- KÓDEX Bypass: Action atualizado, Target adicionado, Atributos "name" inseridos -->
+                        <form action="https://formsubmit.co/afrokodica@gmail.com" method="POST" target="_blank" onsubmit="enviarProtocolo(event)" class="mt-6 space-y-5">
+                            <div class="group">
+                                <label class="block text-indigo-400 text-[10px] uppercase tracking-widest mb-1 group-focus-within:text-amber-400 transition-colors">Identificação (Email)</label>
+                                <input type="email" name="email" id="uplink-email" required class="w-full bg-slate-900 border border-slate-700 rounded px-4 py-3 text-white focus:border-amber-500 focus:outline-none transition-colors" placeholder="seu_email@dominio.com">
+                            </div>
+                            <div class="group">
+                                <label class="block text-indigo-400 text-[10px] uppercase tracking-widest mb-1 group-focus-within:text-amber-400 transition-colors">Mensagem / Intenção</label>
+                                <textarea name="message" id="uplink-message" required rows="3" class="w-full bg-slate-900 border border-slate-700 rounded px-4 py-3 text-white focus:border-amber-500 focus:outline-none transition-colors" placeholder="Solicito acesso ao protocolo..."></textarea>
+                            </div>
+
+                            <!-- Configurações Ocultas do FormSubmit -->
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_template" value="box">
+                            <input type="hidden" name="_subject" value="[AFROKÓDICA UPLINK] Novo Sinal Recebido">
+
+                            <button type="submit" id="uplink-btn" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded tracking-[0.2em] uppercase text-xs transition-all shadow-lg hover:shadow-indigo-500/50">
+                                Enviar Sinal
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 border-t border-white/5 text-center text-xs font-mono text-slate-600 bg-black">
+        <p class="mb-2 tracking-widest text-slate-500">DESENVOLVIDO POR AFROKÓDICA</p>
+        <p>© 2026 AFROKÓDICA OS. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- JS LOGIC -->
+    <script>
+        // --- 1. NEURAL CANVAS ANIMATION ---
+        const canvas = document.getElementById('neural-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.3;
+                this.vy = (Math.random() - 0.5) * 0.3;
+                this.size = Math.random() * 2 + 0.5;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(79, 70, 229, 0.4)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 70; i++) particles.push(new Particle());
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+                particles.forEach(p2 => {
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.strokeStyle = `rgba(79, 70, 229, ${0.1 - dist/1200})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        // --- 2. 3D TILT EFFECT FOR CARDS ---
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -3; 
+                const rotateY = ((x - centerX) / centerX) * 3;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        });
+
+        // --- 3. RADAR CHART CONFIGURATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctxChart = document.getElementById('comparisonChart').getContext('2d');
+            new Chart(ctxChart, {
+                type: 'radar',
+                data: {
+                    labels: ['Foco', 'Privacidade', 'Velocidade', 'Utilidade', 'Custo Zero'],
+                    datasets: [{
+                        label: 'AFROKÓDICA OS',
+                        data: [98, 100, 95, 95, 100],
+                        backgroundColor: 'rgba(79, 70, 229, 0.25)',
+                        borderColor: '#4f46e5',
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#4f46e5',
+                        borderWidth: 2
+                    }, {
+                        label: 'Web Convencional',
+                        data: [30, 40, 60, 50, 20],
+                        backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                        borderColor: '#555',
+                        borderWidth: 1,
+                        borderDash: [5, 5],
+                        pointBackgroundColor: 'transparent',
+                        pointBorderColor: 'transparent'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            angleLines: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { display: false, backdropColor: 'transparent' },
+                            pointLabels: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } }
+                        }
+                    },
+                    plugins: { 
+                        legend: { labels: { color: '#cbd5e1', font: { family: 'Inter', size: 11 } } },
+                        tooltip: { backgroundColor: 'rgba(0,0,0,0.9)', titleFont: {family: 'Cinzel'}, padding: 12, cornerRadius: 4 }
+                    }
+                }
+            });
+        });
+
+        // --- 4. PROTOCOLO DE TRANSMISSÃO SOBERANA (KÓDEX Bypass Aplicado) ---
+        function enviarProtocolo(event) {
+            event.preventDefault();
+            const form = event.target;
+            const btn = document.getElementById('uplink-btn');
+            const emailInput = document.getElementById('uplink-email');
+            const msgInput = document.getElementById('uplink-message');
+            
+            if (!emailInput || !msgInput || !emailInput.value || !msgInput.value) return;
+
+            // Feedback Visual de Processamento
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'ESTABELECENDO UPLINK...';
+            btn.classList.add('animate-pulse', 'bg-amber-500', 'text-black');
+            btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500', 'text-white');
+
+            // Construção Nativa de Dados para FormSubmit
+            const formData = new FormData(form);
+
+            // Chamada de API silenciosa
+            fetch('https://formsubmit.co/ajax/afrokodica@gmail.com', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Ativação Pendente ou Erro de Gateway");
+                return response.json();
+            })
+            .then(data => {
+                if(data.success === "true" || data.success === true) {
+                    // Sucesso In-App: Mudança de estado visual
+                    btn.innerHTML = 'SINAL ENTREGUE';
+                    btn.classList.remove('animate-pulse', 'bg-amber-500', 'text-black');
+                    btn.classList.add('bg-emerald-600', 'text-white');
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.classList.remove('bg-emerald-600');
+                        btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500');
+                        form.reset();
+                    }, 4000);
+                } else {
+                    throw new Error("Transmissão rejeitada pelo Gateway.");
+                }
+            })
+            .catch(error => {
+                // BYPASS KÓDEX: Se a API rejeitar (por falta de ativação/verificação), força submissão nativa
+                console.warn("KÓDEX: Transmissão silenciosa retida. Acionando bypass de ativação nativa...");
+                btn.innerHTML = 'REDIRECIONANDO...';
+                btn.classList.remove('animate-pulse', 'bg-amber-500', 'text-black');
+                btn.classList.add('bg-yellow-500', 'text-black');
+                
+                setTimeout(() => {
+                    form.submit();
+                    // Restaura o botão após envio
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.classList.remove('bg-yellow-500', 'text-black');
+                        btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white');
+                        form.reset();
+                    }, 2000);
+                }, 1000);
+            });
+        }
+    </script>
+</body>
+</html>
